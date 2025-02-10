@@ -17,7 +17,7 @@ make_udf_function!(
 );
 
 #[derive(Debug)]
-pub(super) struct JsonGetStr {
+pub struct JsonGetStr {
     signature: Signature,
     aliases: [String; 1],
 }

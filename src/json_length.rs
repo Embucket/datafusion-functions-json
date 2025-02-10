@@ -18,7 +18,7 @@ make_udf_function!(
 );
 
 #[derive(Debug)]
-pub(super) struct JsonLength {
+pub struct JsonLength {
     signature: Signature,
     aliases: [String; 2],
 }

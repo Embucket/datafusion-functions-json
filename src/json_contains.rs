@@ -18,7 +18,7 @@ make_udf_function!(
 );
 
 #[derive(Debug)]
-pub(super) struct JsonContains {
+pub struct JsonContains {
     signature: Signature,
     aliases: [String; 1],
 }

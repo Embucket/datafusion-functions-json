@@ -18,7 +18,7 @@ make_udf_function!(
 );
 
 #[derive(Debug)]
-pub(super) struct JsonGetFloat {
+pub struct JsonGetFloat {
     signature: Signature,
     aliases: [String; 1],
 }
