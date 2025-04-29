@@ -5,6 +5,7 @@ use datafusion::arrow::array::ArrayRef;
 use datafusion::arrow::array::UnionArray;
 use datafusion::arrow::datatypes::DataType;
 use datafusion::common::Result as DataFusionResult;
+use datafusion::logical_expr::ScalarFunctionArgs;
 use datafusion::logical_expr::{ColumnarValue, ScalarUDFImpl, Signature, Volatility};
 use datafusion::scalar::ScalarValue;
 use jiter::{Jiter, NumberAny, NumberInt, Peek};
@@ -55,7 +56,8 @@ impl ScalarUDFImpl for JsonGet {
         return_type_check(arg_types, self.name(), JsonUnion::data_type())
     }
 
-    fn invoke(&self, args: &[ColumnarValue]) -> DataFusionResult<ColumnarValue> {
+    fn invoke_with_args(&self, args: ScalarFunctionArgs) -> DataFusionResult<ColumnarValue> {
+        let args = &args.args;
         invoke::<JsonUnion>(args, jiter_json_get_union)
     }
 

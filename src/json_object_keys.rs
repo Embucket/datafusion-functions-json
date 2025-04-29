@@ -4,7 +4,7 @@ use std::sync::Arc;
 use datafusion::arrow::array::{ArrayRef, ListBuilder, StringBuilder};
 use datafusion::arrow::datatypes::{DataType, Field};
 use datafusion::common::{Result as DataFusionResult, ScalarValue};
-use datafusion::logical_expr::{ColumnarValue, ScalarUDFImpl, Signature, Volatility};
+use datafusion::logical_expr::{ColumnarValue, ScalarUDFImpl, Signature, Volatility, ScalarFunctionArgs};
 use jiter::Peek;
 
 use crate::common::{get_err, invoke, jiter_json_find, return_type_check, GetError, InvokeResult, JsonPath};
@@ -53,7 +53,8 @@ impl ScalarUDFImpl for JsonObjectKeys {
         )
     }
 
-    fn invoke(&self, args: &[ColumnarValue]) -> DataFusionResult<ColumnarValue> {
+    fn invoke_with_args(&self, args: ScalarFunctionArgs) -> DataFusionResult<ColumnarValue> {
+        let args = &args.args;
         invoke::<BuildListArray>(args, jiter_json_object_keys)
     }
 

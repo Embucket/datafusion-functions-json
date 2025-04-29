@@ -3,7 +3,7 @@ use std::any::Any;
 use datafusion::arrow::array::StringArray;
 use datafusion::arrow::datatypes::DataType;
 use datafusion::common::Result as DataFusionResult;
-use datafusion::logical_expr::{ColumnarValue, ScalarUDFImpl, Signature, Volatility};
+use datafusion::logical_expr::{ColumnarValue, ScalarUDFImpl, Signature, Volatility, ScalarFunctionArgs};
 
 use crate::common::{get_err, invoke, jiter_json_find, return_type_check, GetError, JsonPath};
 use crate::common_macros::make_udf_function;
@@ -47,7 +47,8 @@ impl ScalarUDFImpl for JsonGetJson {
         return_type_check(arg_types, self.name(), DataType::Utf8)
     }
 
-    fn invoke(&self, args: &[ColumnarValue]) -> DataFusionResult<ColumnarValue> {
+    fn invoke_with_args(&self, args: ScalarFunctionArgs) -> DataFusionResult<ColumnarValue> {
+        let args = &args.args;
         invoke::<StringArray>(args, jiter_json_get_json)
     }
 
