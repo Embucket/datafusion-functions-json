@@ -40,4 +40,4 @@ name = "main"
 harness = false
 
 [patch.crates-io]
-datafusion = { git = "https://github.com/Embucket/datafusion.git", rev = "5654173da369eb2d3d1b6b0350919c35ee21b511" }
+datafusion = { git = "https://github.com/Embucket/datafusion.git", rev = "d412f43ec5e83bc4fa16c3380fff1ce0967ec01c" }
