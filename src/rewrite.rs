@@ -6,6 +6,7 @@ use datafusion::common::tree_node::Transformed;
 use datafusion::common::Column;
 use datafusion::common::DFSchema;
 use datafusion::common::Result;
+use datafusion::common::Spans;
 use datafusion::logical_expr::expr::{Alias, Cast, Expr, ScalarFunction};
 use datafusion::logical_expr::expr_rewriter::FunctionRewrite;
 use datafusion::logical_expr::planner::{ExprPlanner, PlannerResult, RawBinaryExpr};
@@ -192,7 +193,7 @@ impl ExprPlanner for JsonExprPlanner {
             Expr::ScalarFunction(ScalarFunction {
                 func: op.into(),
                 args: vec![expr.left, expr.right],
-                spans: Default::default(),
+                spans: Spans::default(),
             }),
             None::<&str>,
             alias_name,
