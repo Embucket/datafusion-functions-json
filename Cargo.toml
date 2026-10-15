@@ -39,12 +39,5 @@ pedantic = { level = "deny", priority = -1 }
 name = "main"
 harness = false
 
-# [patch.crates-io]
-# datafusion = { git = "https://github.com/apache/datafusion.git", rev = "d47bd599ee911eb4be018595b860341ff437ccb1" }
-# datafusion-common = { git = "https://github.com/apache/datafusion.git", rev = "d47bd599ee911eb4be018595b860341ff437ccb1" }
-# datafusion-expr = { git = "https://github.com/apache/datafusion.git", rev = "d47bd599ee911eb4be018595b860341ff437ccb1" }
-# datafusion-execution = { git = "https://github.com/apache/datafusion.git", rev = "d47bd599ee911eb4be018595b860341ff437ccb1" }
-# datafusion-sql = { git = "https://github.com/apache/datafusion.git", rev = "d47bd599ee911eb4be018595b860341ff437ccb1" }
-# datafusion-proto = { git = "https://github.com/apache/datafusion.git", rev = "d47bd599ee911eb4be018595b860341ff437ccb1" }
-# datafusion-datasource = { git = "https://github.com/apache/datafusion.git", rev = "d47bd599ee911eb4be018595b860341ff437ccb1" }
-# datafusion-physical-expr-adapter = { git = "https://github.com/apache/datafusion.git", rev = "d47bd599ee911eb4be018595b860341ff437ccb1" }
+[patch.crates-io]
+datafusion = { git = "https://github.com/Embucket/datafusion.git", rev = "5654173da369eb2d3d1b6b0350919c35ee21b511" }
