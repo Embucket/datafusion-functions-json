@@ -8,7 +8,7 @@ license = "Apache-2.0"
 keywords = ["datafusion", "JSON", "SQL"]
 categories = ["database-implementations", "parsing"]
 repository = "https://github.com/datafusion-contrib/datafusion-functions-json/"
-rust-version = "1.88.0"
+rust-version = "1.94.0"
 
 [dependencies]
 datafusion = { version = "55", default-features = false, features = [
@@ -39,12 +39,5 @@ pedantic = { level = "deny", priority = -1 }
 name = "main"
 harness = false
 
-# [patch.crates-io]
-# datafusion = { git = "https://github.com/apache/datafusion.git", rev = "d47bd599ee911eb4be018595b860341ff437ccb1" }
-# datafusion-common = { git = "https://github.com/apache/datafusion.git", rev = "d47bd599ee911eb4be018595b860341ff437ccb1" }
-# datafusion-expr = { git = "https://github.com/apache/datafusion.git", rev = "d47bd599ee911eb4be018595b860341ff437ccb1" }
-# datafusion-execution = { git = "https://github.com/apache/datafusion.git", rev = "d47bd599ee911eb4be018595b860341ff437ccb1" }
-# datafusion-sql = { git = "https://github.com/apache/datafusion.git", rev = "d47bd599ee911eb4be018595b860341ff437ccb1" }
-# datafusion-proto = { git = "https://github.com/apache/datafusion.git", rev = "d47bd599ee911eb4be018595b860341ff437ccb1" }
-# datafusion-datasource = { git = "https://github.com/apache/datafusion.git", rev = "d47bd599ee911eb4be018595b860341ff437ccb1" }
-# datafusion-physical-expr-adapter = { git = "https://github.com/apache/datafusion.git", rev = "d47bd599ee911eb4be018595b860341ff437ccb1" }
+[patch.crates-io]
+datafusion = { git = "https://github.com/Embucket/datafusion.git", rev = "d412f43ec5e83bc4fa16c3380fff1ce0967ec01c" }

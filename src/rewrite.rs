@@ -6,6 +6,7 @@ use datafusion::common::tree_node::Transformed;
 use datafusion::common::Column;
 use datafusion::common::DFSchema;
 use datafusion::common::Result;
+use datafusion::common::Spans;
 use datafusion::logical_expr::expr::{Alias, Cast, Expr, ScalarFunction};
 use datafusion::logical_expr::expr_rewriter::FunctionRewrite;
 use datafusion::logical_expr::planner::{ExprPlanner, PlannerResult, RawBinaryExpr};
@@ -50,6 +51,7 @@ fn optimise_json_get_cast(cast: &Cast) -> Option<Transformed<Expr>> {
     Some(Transformed::yes(Expr::ScalarFunction(ScalarFunction {
         func,
         args: scalar_func.args.clone(),
+        spans: scalar_func.spans.clone(),
     })))
 }
 
@@ -84,6 +86,7 @@ fn unnest_json_calls(func: &ScalarFunction) -> Option<Transformed<Expr>> {
         Some(Transformed::yes(Expr::ScalarFunction(ScalarFunction {
             func: func.func.clone(),
             args,
+            spans: func.spans.clone(),
         })))
     } else {
         None
@@ -190,9 +193,46 @@ impl ExprPlanner for JsonExprPlanner {
             Expr::ScalarFunction(ScalarFunction {
                 func: op.into(),
                 args: vec![expr.left, expr.right],
+                spans: Spans::default(),
             }),
             None::<&str>,
             alias_name,
         ))))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use datafusion::common::{Location, Span};
+    use datafusion::logical_expr::{col, lit};
+
+    fn span() -> Span {
+        Span::new(Location { line: 2, column: 4 }, Location { line: 2, column: 12 })
+    }
+
+    #[test]
+    fn nested_json_get_rewrite_preserves_outer_span() {
+        let inner = ScalarFunction::new_udf(crate::udfs::json_get_udf(), vec![col("json"), lit("a")]);
+        let mut outer =
+            ScalarFunction::new_udf(crate::udfs::json_get_udf(), vec![Expr::ScalarFunction(inner), lit("b")]);
+        outer.spans.add_span(span());
+
+        let Expr::ScalarFunction(rewritten) = unnest_json_calls(&outer).unwrap().data else {
+            panic!("expected a scalar function")
+        };
+        assert_eq!(rewritten.spans.first(), Some(span()));
+    }
+
+    #[test]
+    fn json_get_cast_rewrite_preserves_call_span() {
+        let mut function = ScalarFunction::new_udf(crate::udfs::json_get_udf(), vec![col("json"), lit("a")]);
+        function.spans.add_span(span());
+        let cast = Cast::new(Box::new(Expr::ScalarFunction(function)), DataType::Int64);
+
+        let Expr::ScalarFunction(rewritten) = optimise_json_get_cast(&cast).unwrap().data else {
+            panic!("expected a scalar function")
+        };
+        assert_eq!(rewritten.spans.first(), Some(span()));
     }
 }
